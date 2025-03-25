@@ -20,9 +20,12 @@ public class Application {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
+                		.allowedOrigins("https://ab11111.netlify.app")
                         .allowedOrigins("http://localhost:4200")  
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("*");
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+                
             }
         };
     }

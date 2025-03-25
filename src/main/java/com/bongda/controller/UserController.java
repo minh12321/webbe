@@ -10,9 +10,12 @@ import com.bongda.service.UserService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "https://ab11111.netlify.app")
 @RequestMapping("/shopbongda")
 public class UserController {
 
@@ -45,9 +48,21 @@ public class UserController {
     public User getAccountDetails(@PathVariable Long accountId) {
         return userService.getUserById(accountId);
     }
-    @GetMapping("/list")
+    @GetMapping(value = "/list", produces = "application/json")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+    @GetMapping("/login/oauth2/success")
+    public String handleOAuth2Login(OAuth2AuthenticationToken authentication) {
+        OAuth2User oAuth2User = authentication.getPrincipal();
+        String provider = authentication.getAuthorizedClientRegistrationId();
+        String providerId = oAuth2User.getAttribute("sub");  
+        String fullName = oAuth2User.getAttribute("name");
+        String email = oAuth2User.getAttribute("email");
+
+        User user = userService.registerSocialUser(provider, providerId, fullName, email);
+        
+        return "Welcome " + user.getFullName();
     }
 
 }
