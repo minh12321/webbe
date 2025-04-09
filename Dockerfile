@@ -1,7 +1,7 @@
 # --------------------------
 # Stage 1: Build application
 # --------------------------
-    FROM maven:3.9.6-eclipse-temurin-17 AS build
+    FROM maven:3.9.6-eclipse-temurin-22 AS build
 
     WORKDIR /app
     
@@ -16,7 +16,7 @@
     # --------------------------
     # Stage 2: Run the app
     # --------------------------
-    FROM eclipse-temurin:17-jdk
+    FROM eclipse-temurin:22-jdk
     
     WORKDIR /app
     
