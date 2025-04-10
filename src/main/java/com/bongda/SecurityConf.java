@@ -24,7 +24,7 @@ public class SecurityConf {
             )
             .oauth2Login()
             .and()
-            .formLogin().permitAll();
+            .formLogin(form -> form.permitAll());
 
         return http.build();
     }
