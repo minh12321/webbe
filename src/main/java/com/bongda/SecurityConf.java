@@ -16,15 +16,16 @@ public class SecurityConf {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/shopbongda/**").permitAll() // Cho phép truy cập không cần xác thực
-                .anyRequest().authenticated() // Các endpoint khác yêu cầu xác thực
+                .requestMatchers("/","shopbongda/**").permitAll()
+                .anyRequest().authenticated()
             )
-            .oauth2Login() 
+            .oauth2Login()
             .and()
-            .formLogin() 
-            .permitAll();
+            .formLogin().permitAll();
+
         return http.build();
     }
     @Bean
