@@ -20,7 +20,7 @@ public class Application {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                		.allowedOrigins("https://ab11111.netlify.app")
+                		.allowedOrigins("https://ab-mocha.vercel.app")
                         .allowedOrigins("http://localhost:4200")  
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
