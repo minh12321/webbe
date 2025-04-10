@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "https://ab-mocha.vercel.app")
+@CrossOrigin(origins = "https://ab11111.netlify.app")
 @RequestMapping("/shopbongda/api/upload")
 public class FileUploadController {
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "https://ab-mocha.vercel.app")
+@CrossOrigin(origins = "https://ab11111.netlify.app")
 @RequestMapping("/shopbongda/api/products")
 public class ProductController {
 
