@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+	
 
     // Tìm người dùng theo tên đăng nhập
     User findByUsername(String username);

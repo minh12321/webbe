@@ -37,14 +37,35 @@ public class UserService {
         return userRepository.save(user); // Lưu người dùng vào cơ sở dữ liệu
     }
 
-    // Đăng nhập người dùng
     public User loginUser(String username, String password) {
         User user = userRepository.findByUsername(username);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return user;
+
+        if (user == null) {
+            throw new RuntimeException("Username or password is incorrect");
         }
-        throw new RuntimeException("Invalid username or password");
-    }
+
+        if ("INACTIVE".equals(user.getStatus())) {
+            throw new RuntimeException("Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.");
+        }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            int log = user.getTimelog() + 1;
+            user.setTimelog(log);
+
+            if (log >= 5) {
+                user.setStatus("INACTIVE");
+            }
+
+            userRepository.save(user); 
+            throw new RuntimeException("Username or password is incorrect");
+        }
+
+        user.setTimelog(0);
+        userRepository.save(user);
+        return user;
+     }
+
+       
 
     // Cập nhật thông tin người dùng
     public User updateUser(Long accountId, String fullName, String status, String email, String accountType) {
@@ -75,6 +96,16 @@ public class UserService {
         return userRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
     }
+    
+    // Lấy thông tin người dùng theo tên
+    public User getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found with username: " + username);
+        }
+        return user;
+    }
+    
 
     // Lấy tất cả người dùng
     public List<User> getAllUsers() {

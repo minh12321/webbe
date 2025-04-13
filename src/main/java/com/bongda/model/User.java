@@ -37,6 +37,9 @@ public class User {
     private String providerId; // ID của người dùng trên Google/Facebook
 
     @Column(nullable = false)
+    private int timelog;// số lần đăng nhập
+    
+    @Column(nullable = false)
     private LocalDateTime createdDate; // Ngày tạo tài khoản
 
     // Constructors
@@ -56,7 +59,15 @@ public class User {
         }
     }
 
-    // Getters and Setters
+    public int getTimelog() {
+		return timelog;
+	}
+
+	public void setTimelog(int timelog) {
+		this.timelog = timelog;
+	}
+
+	// Getters and Setters
     public Long getAccountId() {
         return accountId;
     }
