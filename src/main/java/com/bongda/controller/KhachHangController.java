@@ -36,7 +36,7 @@ public class KhachHangController {
     }
 
     @GetMapping("/{id}")
-    public KhachHang getById(@PathVariable Long id) {
+    public KhachHang getById(@PathVariable String id) {
         return service.getById(id);
     }
 

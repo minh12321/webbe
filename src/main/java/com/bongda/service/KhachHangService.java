@@ -36,8 +36,8 @@ public class KhachHangService {
         return repo.findAll();
     }
 
-    public KhachHang getById(Long id) {
-        return repo.findById(id).orElseThrow();
+    public KhachHang getById(String id) {
+        return repo.findByMaKhachHang(id).orElseThrow();
     }
 
     public KhachHang save(KhachHang kh) {
