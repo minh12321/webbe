@@ -35,9 +35,8 @@ public class UserController {
         return userService.loginUser(username, password);
     }
     @PutMapping("/admin/update/{accountId}")
-    public User updateUser(@PathVariable Long accountId, @RequestParam String fullName, 
-                           @RequestParam String status, @RequestParam String accountType,@RequestParam String email) {
-        return userService.updateUser(accountId, fullName, status, accountType,email);
+    public User updateUser(@PathVariable Long accountId, @RequestParam String fullName,@RequestParam String status,@RequestParam String username, @RequestParam String accountType,@RequestParam String email,@RequestParam String diachi,@RequestParam(required = false) String matkhau) {
+        return userService.updateUser(accountId, fullName, status, accountType,email,diachi,matkhau,username);
     }
 
     @DeleteMapping("/admin/delete/{accountId}")

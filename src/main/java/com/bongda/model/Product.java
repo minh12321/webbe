@@ -38,12 +38,23 @@ public class Product {
     @Column(nullable = true)
     private String hinhAnh;  // Lưu đường dẫn ảnh thay vì byte[]
 
+    @Column(nullable = true)
+    private int giamGia = 0;
+    
     private static final AtomicInteger counter = new AtomicInteger(1);
 
     public static String generateProductId() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String timestamp = LocalDateTime.now().format(formatter);
         return timestamp + String.format("%03d", counter.getAndIncrement());
+    }
+    
+    public int getGiamGia() {
+        return giamGia;
+    }
+
+    public void setGiamGia(int giamGia) {
+        this.giamGia = giamGia;
     }
 
     @PrePersist

@@ -1,6 +1,7 @@
 package com.bongda.controller;
 
 import com.bongda.model.Product;
+import com.bongda.respository.ProductRepository;
 import com.bongda.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    private ProductRepository productRepository;
 
     @GetMapping
     public List<Product> getAllProducts() {
@@ -52,5 +54,42 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @PutMapping("/{id}/giam-gia")
+    public ResponseEntity<String> updateDiscount(
+            @PathVariable String id,
+            @RequestParam("giamGia") int giamGia) {
+
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setGiamGia(giamGia);
+            productRepository.save(product);
+            return ResponseEntity.ok("Cập nhật giảm giá thành công");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @PutMapping("/{id}/mat")
+    public ResponseEntity<Integer> capNhatSoLuongMat(
+            @PathVariable String id,
+            @RequestParam("soLuongMat") int soLuongMat) {
+
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+
+            int soLuongHienTai = product.getSoLuong();
+            int soLuongConLai = Math.max(0, soLuongHienTai - soLuongMat); // Không cho nhỏ hơn 0
+
+            product.setSoLuong(soLuongConLai);
+            productRepository.save(product);
+
+            return ResponseEntity.ok(soLuongConLai); // Trả về số lượng còn lại
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

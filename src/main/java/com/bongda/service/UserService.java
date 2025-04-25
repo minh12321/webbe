@@ -65,10 +65,9 @@ public class UserService {
         return user;
      }
 
-       
 
     // Cập nhật thông tin người dùng
-    public User updateUser(Long accountId, String fullName, String status, String email, String accountType) {
+    public User updateUser(Long accountId, String fullName, String status, String email, String accountType,String diachi,String password,String username) {
         Optional<User> userOptional = userRepository.findById(accountId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -76,6 +75,11 @@ public class UserService {
             user.setStatus(status);
             user.setEmail(email);
             user.setAccountType(accountType);
+            user.setDiachi(diachi);
+            if (password != null && !password.trim().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(password));
+            }
+            user.setUsername(username);
             return userRepository.save(user);
         } else {
             throw new RuntimeException("User not found");

@@ -10,39 +10,51 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
-    private Long accountId; // Mã tài khoản
+    private Long accountId; 
 
     @Column(unique = true, nullable = false)
-    private String username; // Tên đăng nhập (bắt buộc nếu không dùng đăng nhập xã hội)
+    private String username; 
 
     @Column(nullable = true)
-    private String password; // Mật khẩu (nullable vì đăng nhập xã hội không cần mật khẩu)
+    private String password; 
 
     @Column(nullable = false)
-    private String fullName; // Tên người dùng
+    private String fullName; 
 
     @Column(nullable = false)
-    private String status; // Trạng thái tài khoản (ví dụ: "ACTIVE", "INACTIVE")
+    private String status;
 
     @Column(nullable = false)
-    private String accountType; // Loại tài khoản (ví dụ: "ADMIN", "USER", "SOCIAL")
+    private String accountType; 
 
     @Column(unique = true, nullable = true)
-    private String email; // Email người dùng (nullable nếu không có email)
+    private String email; 
 
     @Column(nullable = true)
-    private String provider; // Nhà cung cấp đăng nhập (ví dụ: "GOOGLE", "FACEBOOK")
+    private String provider; 
 
     @Column(nullable = true, unique = true)
-    private String providerId; // ID của người dùng trên Google/Facebook
+    private String providerId; 
 
     @Column(nullable = false)
-    private int timelog;// số lần đăng nhập
+    private int timelog;
     
     @Column(nullable = false)
-    private LocalDateTime createdDate; // Ngày tạo tài khoản
-
+    private LocalDateTime createdDate;
+    
+    @Column(nullable = true)
+    private String diachi; 
+    
     // Constructors
+    public String getDiachi() {
+		return diachi;
+	}
+
+	public void setDiachi(String diachi) {
+		this.diachi = diachi;
+	}
+
+	
     public User() {
     }
 
