@@ -3,24 +3,39 @@ package com.bongda.service;
 import com.bongda.model.User;
 import com.bongda.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // Để mã hóa mật khẩu
+    private BCryptPasswordEncoder passwordEncoder;
 
-    // Đăng ký người dùng mới
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                new ArrayList<>() // Add authorities/roles if needed
+        );
+    }
+
     public User registerUser(String username, String password, String fullName, String email) {
         if (userRepository.findByUsername(username) != null) {
             throw new RuntimeException("Username already exists");
@@ -28,13 +43,13 @@ public class UserService {
 
         User user = new User();
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password)); // Mã hóa mật khẩu
+        user.setPassword(passwordEncoder.encode(password));
         user.setFullName(fullName);
         user.setStatus("ACTIVE");
         user.setEmail(email);
-        user.setCreatedDate(LocalDateTime.now()); // Ngày tạo tài khoản
+        user.setCreatedDate(LocalDateTime.now());
 
-        return userRepository.save(user); // Lưu người dùng vào cơ sở dữ liệu
+        return userRepository.save(user);
     }
 
     public User loginUser(String username, String password) {
@@ -56,18 +71,16 @@ public class UserService {
                 user.setStatus("INACTIVE");
             }
 
-            userRepository.save(user); 
+            userRepository.save(user);
             throw new RuntimeException("Username or password is incorrect");
         }
 
         user.setTimelog(0);
         userRepository.save(user);
         return user;
-     }
+    }
 
-
-    // Cập nhật thông tin người dùng
-    public User updateUser(Long accountId, String fullName, String status, String email, String accountType,String diachi,String password,String username) {
+    public User updateUser(Long accountId, String fullName, String status, String accountType, String email, String diachi, String password, String username) {
         Optional<User> userOptional = userRepository.findById(accountId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -86,7 +99,6 @@ public class UserService {
         }
     }
 
-    // Xóa người dùng
     public void deleteUser(Long accountId) {
         if (userRepository.existsById(accountId)) {
             userRepository.deleteById(accountId);
@@ -95,13 +107,11 @@ public class UserService {
         }
     }
 
-    // Lấy thông tin người dùng theo ID
     public User getUserById(Long accountId) {
         return userRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
     }
-    
-    // Lấy thông tin người dùng theo tên
+
     public User getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
@@ -109,31 +119,26 @@ public class UserService {
         }
         return user;
     }
-    
 
-    // Lấy tất cả người dùng
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Đăng ký người dùng thông qua Google/Facebook
     public User registerSocialUser(String provider, String providerId, String fullName, String email) {
         User existingUser = userRepository.findByProviderId(providerId);
         if (existingUser != null) {
-            // Nếu người dùng đã đăng ký qua Google/Facebook trước đó, chỉ cần trả về người dùng đã tồn tại
             return existingUser;
         }
 
-        // Nếu chưa có người dùng, tạo người dùng mới
         User user = new User();
         user.setFullName(fullName);
         user.setEmail(email);
-        user.setProvider(provider);  // Lưu tên provider (Google/Facebook)
-        user.setProviderId(providerId); // Lưu ID từ provider
+        user.setProvider(provider);
+        user.setProviderId(providerId);
         user.setStatus("ACTIVE");
-        user.setAccountType("SOCIAL");  // Loại tài khoản là "SOCIAL"
-        user.setCreatedDate(LocalDateTime.now());  // Ngày tạo tài khoản
+        user.setAccountType("SOCIAL");
+        user.setCreatedDate(LocalDateTime.now());
 
-        return userRepository.save(user); // Lưu người dùng vào cơ sở dữ liệu
+        return userRepository.save(user);
     }
 }

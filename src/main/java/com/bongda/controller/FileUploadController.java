@@ -50,7 +50,7 @@ public class FileUploadController {
             byte[] imageBytes = Files.readAllBytes(path);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG); // Hoặc MediaType.IMAGE_PNG tùy theo định dạng file
+            headers.setContentType(MediaType.IMAGE_JPEG); 
 
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
         } catch (IOException e) {
