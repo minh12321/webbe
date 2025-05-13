@@ -29,13 +29,13 @@ public class ProductController {
         Optional<Product> product = productService.getProductById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @PostMapping
+    
+    @PostMapping("/admin")
     public Product createProduct(@RequestBody Product product) {
         return productService.saveProduct(product);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
         return productService.getProductById(id).map(product -> {
             product.setTenSanPham(updatedProduct.getTenSanPham());
@@ -50,13 +50,13 @@ public class ProductController {
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
     
-    @PutMapping("/{id}/giam-gia")
+    @PutMapping("/admin/{id}/giam-gia")
     public ResponseEntity<String> updateDiscount(
             @PathVariable String id,
             @RequestParam("giamGia") int giamGia) {
@@ -72,7 +72,7 @@ public class ProductController {
         }
     }
     
-    @PutMapping("/{id}/mat")
+    @PutMapping("/admin/{id}/mat")
     public ResponseEntity<Integer> capNhatSoLuongMat(
             @PathVariable String id,
             @RequestParam("soLuongMat") int soLuongMat) {

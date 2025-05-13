@@ -31,8 +31,8 @@ package com.bongda.config;
                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                .csrf(csrf -> csrf.disable())
                .authorizeHttpRequests(auth -> auth
-                   .requestMatchers("/shopbongda/auth/**", "/shopbongda/login/oauth2/**","/shopbongda/api/products","/shopbongda/api/hoadon","/shopbongda/api/khachhang","/shopbongda/api/hoadon/makh/**").permitAll()
-                   .requestMatchers("/shopbongda/admin/**").hasAuthority("ADMIN")
+                   .requestMatchers("/shopbongda/auth/**", "/shopbongda/login/oauth2/**","/shopbongda/api/products","/shopbongda/api/hoadon","/shopbongda/api/khachhang","/shopbongda/api/hoadon/makh/**","/shopbongda/api/upload/**").permitAll()
+                   .requestMatchers("/shopbongda/admin/**","/shopbongda/api/products/admin/**","/shopbongda/api/hoadon/xoa","/shopbongda/api/hoadon/{id}/trangthai").hasAuthority("ADMIN")
                    .anyRequest().authenticated()
                )
                .sessionManagement(session -> session
