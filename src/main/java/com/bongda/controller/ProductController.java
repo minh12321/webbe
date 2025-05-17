@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -17,6 +18,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
     private ProductRepository productRepository;
 
     @GetMapping
@@ -59,7 +61,9 @@ public class ProductController {
     @PutMapping("/admin/{id}/giam-gia")
     public ResponseEntity<String> updateDiscount(
             @PathVariable String id,
-            @RequestParam("giamGia") int giamGia) {
+            @RequestBody Map<String, Integer> payload) {
+
+        int giamGia = payload.get("giamGia");
 
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {

@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(new AuthResponse(jwtToken, user));
     }
 
-    @PutMapping("/admin/update/{accountId}")
+    @PutMapping("/update/{accountId}")
     public User updateUser(@PathVariable Long accountId, @RequestParam String fullName, 
                          @RequestParam String status, @RequestParam String username, 
                          @RequestParam String accountType, @RequestParam String email, 

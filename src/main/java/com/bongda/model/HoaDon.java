@@ -13,7 +13,22 @@ public class HoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    private String maHoaDon;
 
+	private String maKhachHang;
+
+    private String tenHang;
+
+    private double gia;
+
+    private int soLuong;
+
+    private LocalDate ngayMua;
+
+    private String trangThai;
+
+    // Getters & Setters
     public Long getId() {
 		return id;
 	}
@@ -70,18 +85,12 @@ public class HoaDon {
 		this.trangThai = trangThai;
 	}
 
-	private String maKhachHang;
+	public String getMaHoaDon() {
+		return maHoaDon;
+	}
 
-    private String tenHang;
-
-    private double gia;
-
-    private int soLuong;
-
-    private LocalDate ngayMua;
-
-    private String trangThai;
-
-    // Getters & Setters
-    
+	public void setMaHoaDon(String maHoaDon) {
+		this.maHoaDon = maHoaDon;
+	}
+	
 }
