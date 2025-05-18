@@ -1,0 +1,5 @@
+com\bongda\BongdaApplicationTests.class
+com\bongda\controller\ProductControllerTest.class
+com\bongda\service\ProductServiceTest.class
+com\bongda\service\UserServiceTest.class
+com\bongda\controller\UserControllerTest.class
