@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bongda.model.HoaDon;
 import com.bongda.service.HoaDonService;
+import com.bongda.websocket.MyWebSocketHandler;
 
 @CrossOrigin(origins = "https://ab-mocha.vercel.app")
 @RestController
@@ -27,9 +28,19 @@ public class HoaDonController {
 
     @Autowired
     private HoaDonService service;
+    
+
+    
+    @Autowired
+    private MyWebSocketHandler socketHandler;
 
     @PostMapping
     public ResponseEntity<HoaDon> create(@RequestBody HoaDon hoaDon) {
+    	HoaDon saved = service.save(hoaDon);
+
+        // Gửi WebSocket message
+        socketHandler.broadcast(saved);
+    	 
         return ResponseEntity.ok(service.save(hoaDon));
     }
 
